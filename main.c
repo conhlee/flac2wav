@@ -9,7 +9,7 @@
 
 int main(int argc, char** argv) {
     if (argc < 2) {
-        printf("Input file arg missing\n");
+        printf("usage: flac2wav <input flac> [output wav]\n");
         return 1;
     }
 
