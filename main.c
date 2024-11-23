@@ -24,16 +24,23 @@ int main(int argc, char** argv) {
         sprintf(wavPath, "%s.wav", flacPath);
     }
 
+    printf("Converting FLAC at \"%s\" to WAV\n\n", flacPath);
+
     FileHandle fileHndl = FileCreateHandle(flacPath);
+
+    printf("Decoding FLAC data..");
 
     u32 sampleRate;
     u16 channelCount;
-
     ListData samples = FlacDecode(fileHndl.data_u8, fileHndl.size, &sampleRate, &channelCount);
+
+    LOG_OK;
 
     FileDestroyHandle(fileHndl);
 
-    printf("sampleCount=%lu sampleRate=%u, channelCount=%u\n", samples.elementCount, sampleRate, (unsigned)channelCount);
+    printf("    - Decoded %lu samples. (sampleRate=%u, channelCount=%u)\n", samples.elementCount, sampleRate, (unsigned)channelCount);
+
+    printf("Writing WAV to \"%s\"..", wavPath);
 
     fileHndl = WavBuild(samples.data, samples.elementCount, sampleRate, channelCount);
 
@@ -45,4 +52,8 @@ int main(int argc, char** argv) {
         free(wavPath);
 
     FileDestroyHandle(fileHndl);
+
+    printf("\nAll done!\n");
+
+    return 0;
 }
