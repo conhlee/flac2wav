@@ -42,7 +42,7 @@ int main(int argc, char** argv) {
 
     printf("Writing WAV to \"%s\"..", wavPath);
 
-    fileHndl = WavBuild(samples.data, samples.elementCount, sampleRate, channelCount);
+    fileHndl = WavBuild((s16*)samples.data, samples.elementCount, sampleRate, channelCount);
 
     FileWriteHandle(fileHndl, wavPath);
 
