@@ -27,6 +27,8 @@ typedef char s8;
 #define MAX(a,b) ((a) > (b) ? a : b)
 #define MIN(a,b) ((a) < (b) ? a : b)
 
+#define STR_LIT_LEN(string_literal) (sizeof(string_literal) - 1)
+
 #define INDENT_SPACE "    "
 
 #define LOG_OK printf(" OK\n")

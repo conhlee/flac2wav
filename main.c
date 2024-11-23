@@ -13,7 +13,16 @@ int main(int argc, char** argv) {
         return 1;
     }
 
+    int wavOutputSpecified = argc >= 3;
+
     char* flacPath = argv[1];
+    char* wavPath = wavOutputSpecified ? argv[2] : strcat(strdup(flacPath), ".wav");
+    if (wavOutputSpecified)
+        wavPath = argv[2];
+    else {
+        wavPath = (char*)malloc(strlen(flacPath) + STR_LIT_LEN(".wav") + 1);
+        sprintf(wavPath, "%s.wav", flacPath);
+    }
 
     FileHandle fileHndl = FileCreateHandle(flacPath);
 
@@ -27,7 +36,13 @@ int main(int argc, char** argv) {
     printf("sampleCount=%lu sampleRate=%u, channelCount=%u\n", samples.elementCount, sampleRate, (unsigned)channelCount);
 
     fileHndl = WavBuild(samples.data, samples.elementCount, sampleRate, channelCount);
-    FileWriteHandle(fileHndl, strcat(flacPath, ".wav"));
+
+    FileWriteHandle(fileHndl, wavPath);
+
+    LOG_OK;
+
+    if (!wavOutputSpecified)
+        free(wavPath);
 
     FileDestroyHandle(fileHndl);
 }
